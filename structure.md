@@ -5,7 +5,6 @@ job-scheduler/
 └── README.md
 
 
-
 api/
 ├── Dockerfile
 ├── package.json
@@ -16,13 +15,13 @@ api/
     ├── index.ts                # API bootstrap (server start)
     │
     ├── routes/
-    │   ├── health.routes.ts    # /health
-    │   ├── job.routes.ts       # create job, list jobs
-    │   └── dlq.routes.ts       # view / retry dead jobs
+    │   ├── health.routes.ts    # /health endpoint
+    │   ├── job.routes.ts       # create & list jobs
+    │   └── dlq.routes.ts       # view/retry dead jobs
     │
     ├── job/
     │   ├── job.ts              # job data model & interface
-    │   ├── job.service.ts      # add job to queue
+    │   ├── job.service.ts      # add job to queue, mark status
     │   ├── job.retry.ts        # retry config (max retries etc.)
     │   └── job.dlq.ts          # DLQ helper (requeue, inspect)
     │
@@ -32,9 +31,12 @@ api/
     │   └── logger.ts           # centralized logging
     │
     └── config/
-        ├── redis.config.ts     # redis constants
+        ├── redis.config.ts     # Redis constants
         ├── queue.config.ts     # queue names, retry limits
-        └── env.ts              # env validation
+        └── env.ts              # environment validation
+
+
+
 
 
 worker/
@@ -80,15 +82,13 @@ worker/
 
 
 Redis
-├── job_queue              # main queue
+├── job_queue              # main job queue
 ├── retry_queue            # delayed retries
 └── dead_letter_queue      # poison jobs
 
 
 
 
-
-job.service.ts
 ├── createJob()
 ├── fetchNextJob()
 ├── markJobProcessing()
@@ -97,4 +97,4 @@ job.service.ts
 ├── moveToDeadQueue()
 ├── retryJob()
 ├── getJobStatus()
-├── getMetrics()
+└── getMetrics()
