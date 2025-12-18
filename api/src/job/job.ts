@@ -4,7 +4,7 @@ export  type job = {
   createdAt: number,
   updatedAt?: number,
 
-  jobData: object,
+  jobData: jobData,
 
   queueName: string,
 
@@ -34,9 +34,16 @@ export type JobError = {
 
 
 export type JobResult = {
-  success: boolean,
-  tries: number,
-  output?: any,
-  error?: JobError,
-  completedAt: number;
+  success: boolean;
+  output?: any;
+  error?: JobError;
+  finishedAt: number;
 };
+
+
+
+export type jobData = {
+  email:string,
+  message:string
+
+}

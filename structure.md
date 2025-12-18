@@ -84,12 +84,12 @@ Redis
 
 ## Job Service Methods
 job.service.ts
-├── createJob()
-├── fetchNextJob()
+├── createJob()✅ 
+├── fetchNextJob()✅ 
 ├── markJobProcessing()
 ├── markJobCompleted()
 ├── markJobFailed()
 ├── moveToDeadQueue()
-├── retryJob()
+├── retryJob()✅ 
 ├── getJobStatus()
 └── getMetrics()
