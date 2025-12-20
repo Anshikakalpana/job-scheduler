@@ -1,0 +1,1 @@
+const permanentFailures= ["Invalid job data: email and message are required", "Authentication failed", "Authorization failed"];
