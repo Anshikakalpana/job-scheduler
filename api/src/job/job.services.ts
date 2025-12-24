@@ -25,6 +25,7 @@ export const createJob = async (jobData: job): Promise<JobResult> => {
 
    
     if (!newJob.jobData.email || !newJob.jobData.message) {
+    
       newJobResult.error = {
         message: 'Invalid job data: email and message are required',
         failedAt: Date.now(),
@@ -75,6 +76,29 @@ const retryJob = async (jobData: job): Promise<void> => {
     throw err;
   }
 };
+
+
+
+
+
+
+
+const moveJobToDLQ = async (jobData: job, result: JobResult): Promise<void> => {
+
+  try{
+    if(result.error===undefined){
+      throw new Error('JobResult error is undefined, cannot move to DLQ');
+    }
+    await redis.rPush(`${jobData.queueName}:dlq`, JSON.stringify({...jobData, error: result.error}));
+  }catch(err){
+    console.error('Error moving job to DLQ:', err);
+    throw err;
+  }
+
+}
+
+
+
 
 const getJobStatus= async (jobId: string) => {
   try{
