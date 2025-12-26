@@ -21,7 +21,7 @@ export  type job = {
   priority?: number,
   runAt?: number
 
-  delay?: delay,
+  
 };
 
 

@@ -1,10 +1,10 @@
 import redis from "../utils/redis.js";
-import { job, JobResult } from "../common/job.type.js";
+import { job, JobResult ,delay } from "../common/job.type.js";
 import { getQueueKeys } from "../common/queue.constants.js";
 import { moveJobToDLQ } from "../dlq/dlq.producer.js";
 import { delayJob } from "../delay-jobs/delay-job.js";
 
-const retryJob = async (jobData: job, result: JobResult): Promise<void> => {
+const retryJob = async (delayData:delay ,jobData: job, result: JobResult): Promise<void> => {
   try {
     // 1️⃣ Increment tries FIRST
     jobData.tries += 1;
@@ -19,10 +19,10 @@ const retryJob = async (jobData: job, result: JobResult): Promise<void> => {
 
     // 3️⃣ Delay retry window
     if (
-      jobData.tries >= jobData.delay?.limitOfTries &&
+      jobData.tries >= delayData.limitOfTries &&
       jobData.tries <= jobData.maxTries
     ) {
-      await delayJob(jobData, jobData.delay.retryAfterSeconds);
+      await delayJob(jobData, delayData.retryAfterSeconds);
       console.log("job retry after some seconds");
       return;
     }
